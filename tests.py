@@ -13,6 +13,7 @@ def prepare_mock_steps_data() -> List[dict]:
         "waypoints": np.array([0.0] * 200),
         "motor_tach": 0.0,
         "reward": 0.0,
+        "current_waypoint": 0,
         "front_csi_image": np.zeros((410, 820, 3)),
         "action": np.array([0.0, 0.0]),
         "noise": np.array([0.0, 0.0])
@@ -24,6 +25,7 @@ def prepare_mock_steps_data() -> List[dict]:
         "waypoints": np.array([0.0] * 200),
         "motor_tach": 0.0,
         "reward": 0.0,
+        "current_waypoint": 1,
         "front_csi_image": np.zeros((410, 820, 3)),
         "action": np.array([0.0, 0.0]),
         "noise": np.array([0.0, 0.0])
@@ -35,6 +37,7 @@ def prepare_mock_steps_data() -> List[dict]:
         "waypoints": np.array([0.0] * 200),
         "motor_tach": 0.0,
         "reward": 0.0,
+        "current_waypoint": 2,
         "front_csi_image": np.zeros((410, 820, 3)),
         "action": np.array([0.0, 0.0]),
         "noise": np.array([0.0, 0.0])
