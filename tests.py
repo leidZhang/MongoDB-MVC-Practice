@@ -61,7 +61,8 @@ def test_step_to_bson() -> None:
         converted_data: dict = steps[i].to_bson(i)
         assert converted_data['id'] is not None
         assert type(converted_data) is dict
-        assert len(converted_data.keys()) == 8
+        assert len(converted_data.keys()) == 9
+
 
 def test_episode_to_bson() -> None:
     raw_steps: List[dict] = prepare_mock_steps_data()
