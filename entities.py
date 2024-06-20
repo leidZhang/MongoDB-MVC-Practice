@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from datetime import datetime
 
 import numpy as np
@@ -11,7 +11,7 @@ class Step:
         self.waypoints: np.ndarray = step_data["waypoints"] # 200 waypoints
         self.motor_tach: float = step_data["motor_tach"] # current motor tach
         self.reward: float = step_data["reward"] # step reward
-        self.front_csi_image: np.ndarray = step_data["front_csi_image"] # image
+        self.front_csi_image: Union[np.ndarray, str] = step_data["front_csi_image"] # image
         self.action: np.ndarray = step_data["action"] # [throttle, steering]
         self.noise: np.ndarray = step_data["noise"] # [noise_t, noise_s]
 
@@ -22,7 +22,7 @@ class Step:
             "waypoints": self.waypoints.tolist(),
             "motor_tach": self.motor_tach,
             "reward": self.reward,
-            "front_csi_image": self.front_csi_image.tobytes(),
+            "front_csi_image": self.front_csi_image,
             "action": self.action.tolist(),
             "noise": self.noise.tolist()
         }
@@ -32,13 +32,12 @@ class Episode:
     def __init__(self, episode_data: dict) -> None:
         self.timestamp: datetime = episode_data["timestamp"] # episode start time
         self.task: List[int] = episode_data["task"] # current node sequence
-        self.steps: List[Step] = episode_data["steps"] # all step info in this episode
+        self.steps: List[Step] = [Step(step_data) for step_data in episode_data["steps"]] # all steps in episode
 
     def to_bson(self) -> dict:
+        bson_steps: dict = [self.steps[i].to_bson(i) for i in range(len(self.steps))]
         return {
             "timestamp": self.timestamp,
             "task": self.task,
-            "steps": [
-                self.steps[i].to_bson(i) for i in range(len(self.steps))
-            ]
+            "steps": bson_steps
         }
