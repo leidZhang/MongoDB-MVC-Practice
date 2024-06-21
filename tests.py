@@ -1,57 +1,11 @@
 from typing import List, Tuple
 
 import numpy as np
+from pymongo import MongoClient
 
 from entities import Step, Episode
 from controllers import QCarDataController
-
-
-def prepare_mock_steps_data() -> List[dict]:
-    step_1: dict = {
-        "id": 1,
-        "state": np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
-        "waypoints": np.array([0.0] * 200),
-        "motor_tach": 0.0,
-        "reward": 0.0,
-        "current_waypoint": 0,
-        "front_csi_image": np.zeros((410, 820, 3)),
-        "action": np.array([0.0, 0.0]),
-        "noise": np.array([0.0, 0.0])
-    }
-
-    step_2: dict = {
-        "id": 2,
-        "state": np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
-        "waypoints": np.array([0.0] * 200),
-        "motor_tach": 0.0,
-        "reward": 0.0,
-        "current_waypoint": 1,
-        "front_csi_image": np.zeros((410, 820, 3)),
-        "action": np.array([0.0, 0.0]),
-        "noise": np.array([0.0, 0.0])
-    }
-
-    step_3: dict = {
-        "id": 2,
-        "state": np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
-        "waypoints": np.array([0.0] * 200),
-        "motor_tach": 0.0,
-        "reward": 0.0,
-        "current_waypoint": 2,
-        "front_csi_image": np.zeros((410, 820, 3)),
-        "action": np.array([0.0, 0.0]),
-        "noise": np.array([0.0, 0.0])
-    }
-
-    return [step_1, step_2, step_3]
-
-
-def prepare_mock_episode_data(raw_steps: List[dict]) -> dict:
-    return {
-        "timestamp": "2021-01-01T00:00:00",
-        "task": [0, 1, 2],
-        "steps": raw_steps
-    }
+from utils import prepare_mock_episode_data, prepare_mock_steps_data
 
 
 def test_step_to_bson() -> None:
@@ -76,14 +30,23 @@ def test_episode_to_bson() -> None:
     print(converted_data["steps"])
 
 
-def mock_save_data() -> None:
+def test_save_data() -> None:
     # prepare the mock data
     raw_steps: List[dict] = prepare_mock_steps_data()
     raw_episode: dict = prepare_mock_episode_data(raw_steps)
     # prepare the data controller
     controller: QCarDataController = QCarDataController()
-    controller.save_data(raw_episode)
+    controller.save_data_offline(raw_episode)
+
+
+def test_connection() -> None:
+    try:
+        client: MongoClient = MongoClient("mongodb://localhost:27017/")
+        databases: list = client.list_database_names()
+        print(f"Connection successful, database list: {databases}")
+    except Exception:
+        print("Connection failed, please check your MongoDB Server")
 
 
 if __name__ == "__main__":
-    mock_save_data()
+    test_save_data()

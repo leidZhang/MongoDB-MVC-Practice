@@ -14,7 +14,8 @@ class Step:
         self.front_csi_image: Union[np.ndarray, str] = step_data["front_csi_image"] # image
         self.action: np.ndarray = step_data["action"] # [throttle, steering]
         self.noise: np.ndarray = step_data["noise"] # [noise_t, noise_s]
-        self.current_waypoint: int = step_data["current_waypoint"] 
+        self.current_waypoint: int = step_data["current_waypoint"]
+
     def to_bson(self, counter: int) -> dict:
         return {
             "id": counter,
