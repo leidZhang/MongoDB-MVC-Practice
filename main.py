@@ -4,11 +4,11 @@ from typing import List
 from multiprocessing import Process
 from queue import Queue
 
-from utils import prepare_mock_online_data
-from utils import MOCK_TIMESTAMPS, MOCK_TASKS
-from client import QCarRecordClient
-from server import QCarRecordServer
-from controllers import QCarDataController
+from common.utils import prepare_mock_online_data
+from common.utils import MOCK_TIMESTAMPS, MOCK_TASKS
+from sockets.client import QCarRecordClient
+from sockets.server import QCarRecordServer
+from backend.controllers import QCarDataController
 
 PORT: int = 8080
 

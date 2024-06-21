@@ -3,9 +3,9 @@ from typing import List, Tuple
 import numpy as np
 from pymongo import MongoClient
 
-from entities import Step, Episode
-from controllers import QCarDataController
-from utils import prepare_mock_episode_data, prepare_mock_steps_data
+from common.entities import Step, Episode
+from backend.controllers import QCarDataController
+from common.utils import prepare_mock_episode_data, prepare_mock_steps_data
 
 
 def test_step_to_bson() -> None:
