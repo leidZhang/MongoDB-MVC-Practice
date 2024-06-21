@@ -1,6 +1,5 @@
-from typing import List, Tuple
+from typing import List
 
-import numpy as np
 from pymongo import MongoClient
 
 from common.entities import Step, Episode
